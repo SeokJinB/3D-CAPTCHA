@@ -78,7 +78,7 @@ int maxHeight(BVH& bvh)
 
 GLfloat* randomRGB(float prob)
 {
-	GLfloat rgb[3];
+	GLfloat rgb[3] = {};
 
 	if (prob <= 0.33)
 	{
@@ -108,7 +108,7 @@ void DrawWireAABB(BoundingBox& box)
 	uniform_real_distribution<> colorProb(0.0, 1.0);
 	auto prob = colorProb(gen);
 	GLfloat* rgb = randomRGB(prob);
-	glColor3fv(rgb);
+	//glColor3fv(rgb);
 
 	// 아랫면 Drawing
 	glBegin(GL_LINE_LOOP);
@@ -231,13 +231,13 @@ void DrawSphere(BoundingBox& box)
 	glPointSize(POINT_SIZE);
 
 	// 1) 선 집합으로 렌더링
-	gluQuadricDrawStyle(quad, GLU_LINE);
+	//gluQuadricDrawStyle(quad, GLU_LINE);
 
 	// 2) 선 집합으로 렌더링(평면을 구분하는 가장자리가 그려지지 않음)
 	//gluQuadricDrawStyle(quad, GLU_SILHOUETTE);
 
 	// 3) 포인트 집합으로 렌더링
-	//gluQuadricDrawStyle(quad, GLU_POINT);
+	gluQuadricDrawStyle(quad, GLU_POINT);
 
 	// 4) 다각형 기본 형식으로 렌더링
 	//gluQuadricDrawStyle(quad, GLU_FILL);
@@ -334,67 +334,30 @@ void DrawBVbyLevel(BVH* bvh, SurfaceMesh& mesh, auto& normals, int lv)
 		// lv 레벨 노드를 Drawing
 		if (bv->level == lv)
 		{
-			BoundingBox bvBox = bv->box;
 			//DrawMesh(bv, mesh, normals);
-
+			
 			// 왼쪽 자식 BV Drawing
 			if (bv->left_ != nullptr)
 			{
-				auto prob = colorProb(gen);
-				GLfloat* rgb = randomRGB(prob);
-				//glColor3fv(rgb);
-
 				BV* leftBV = bv->left_;
-
-				// 1) Wireframe AABB
-				//DrawWireAABB(leftBV->box);
-
-				// 2) Solid AABB
-				//DrawSolidAABB(leftBV->box);
-
-				// 3) Sphere
-				//DrawSphere(leftBV->box);
-
 				q.push(leftBV);
 			}
 
 			// 오른쪽 자식 BV Drawing
 			if (bv->right_ != nullptr)
 			{
-				auto prob = colorProb(gen);
-				GLfloat* rgb = randomRGB(prob);
-				//glColor3fv(rgb);
-
 				BV* rightBV = bv->right_;
-
-				// 1) Wireframe AABB
-				//DrawWireAABB(rightBV->box);
-
-				// 2) Solid AABB
-				//DrawSolidAABB(rightBV->box);
-
-				// 3) Sphere
-				//DrawSphere(rightBV->box);
-
 				q.push(rightBV);
 			}
 
 			// 가운데 자식 BV Drawing
 			if (bv->mid_ != nullptr)
 			{
+				BV* midBV = bv->mid_;
 				auto prob = colorProb(gen);
 				GLfloat* rgb = randomRGB(prob);
 				glColor3fv(rgb);
 
-				BV* midBV = bv->mid_;
-
-				// 1) Wireframe AABB
-				//DrawWireAABB(midBV->box);
-
-				// 2) Solid AABB
-				//DrawSolidAABB(midBV->box);
-
-				// 3) Sphere
 				DrawSphere(midBV->box);
 
 				q.push(midBV);
