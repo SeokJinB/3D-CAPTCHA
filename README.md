@@ -22,5 +22,5 @@
 </p>
 
 <br></br>
-📹[3D CAPTCHA 시연 영상](https://youtu.be/8_8ZrDMHNRk)
+📹Watch the Demo: [3D CAPTCHA 시연 영상](https://youtu.be/8_8ZrDMHNRk)
 <br></br>
